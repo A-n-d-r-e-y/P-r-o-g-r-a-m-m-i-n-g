@@ -1,13 +1,17 @@
-class SimpComplex {
-private:
-	float real = 0;
-	float imag = 0;
+#include "iostream"
+#include <cmath>
+#include <clocale>
+using namespace std;
 
-public:
+class SimpComplex {
+	float real, imag;
+	public:
+		SimpComplex(float a = 0, float b = 0) {
+			real = a; imag = b;
+		}
 	void set_real(float x) {
 		real = x;
 	}
-
 	float get_real() {
 		return real;
 	}
@@ -15,70 +19,47 @@ public:
 	void set_imag(float x) {
 		imag = x;
 	}
-
 	float get_imag() {
 		return imag;
 	}
 
-	void set(float r, float i) {
-		real = r;
-		imag = i;
-	}
-
-	float get() {
-		return 0;
-	}
-
-	SimpComplex sum(SimpComplex C2) {//первый вариант кода(с3=с1.sum(с2)
-		SimpComplex C1;
-		C1.set_real(real + C2.get_real());
-		C1.set_imag(imag + C2.get_imag());
-		return C1;
-	}
-	SimpComplex umn(SimpComplex C2) {//первый вариант кода(с3=с1.umn(с2)
-		SimpComplex C1;
-		C1.set_real(real * C2.get_real());
-		C1.set_imag(imag * C2.get_imag());
-		return C1;
-	}
-	SimpComplex umnCom(SimpComplex C2) {//первый вариант кода(с3=с1.umnCom(с2)
-		SimpComplex C1;
-		C1.set_real(real * C2.get_imag());
-		C1.set_imag(imag * C2.get_imag());
-		return C1;
-	}
-
-	/*
-	friend SimpComplex operator+=(SimpComplex C1, SimpComplex C2) {//второй вариант сложения (с3+=с2) и (с3+=с2)
-		SimpComplex C3;
-		C3.set_real(C1.get_real() + C2.get_real());
-		C3.set_imag(C1.get_imag() + C2.get_imag());
+	friend ostream& operator<< (ostream &out, const SimpComplex &n);//операции вывода перегрузки
+	friend istream& operator>> (istream &in, SimpComplex &n);//операция ввода перегрузки
+	friend SimpComplex operator+(const SimpComplex &C1, const SimpComplex &C2) {//сложение 
+		SimpComplex C3 = SimpComplex(C1.real + C2.real, C1.imag + C2.imag);
 		return C3;
 	}
-	friend SimpComplex operator*=(SimpComplex C1, SimpComplex C2) {//второй вариант умножения (с3*=с1, с2) и (с3*=с2)
-		SimpComplex C3;
-		C3.set_real(C1.get_real() * C2.get_real());
-		C3.set_imag(C1.get_imag() * C2.get_imag());
+	friend SimpComplex operator*(const SimpComplex &C1, const SimpComplex &C2) {//умножение 
+		SimpComplex C3 = SimpComplex(C1.real * C2.real, C1.imag * C2.imag);
 		return C3;
 	}
-	friend SimpComplex operator%=(SimpComplex C1, SimpComplex C2) {//второй вариант умножения на компл. число (с3%=с1, с2) и (с3%=с2)
-		SimpComplex C3;
-		C3.set_real(C1.get_real() * C2.get_imag());
-		C3.set_imag(C1.get_imag() * C2.get_imag());
+	friend SimpComplex operator%(const SimpComplex& C1, const SimpComplex& C2) {//умножение на компл. число 
+		SimpComplex C3 = SimpComplex(C1.real * C2.imag, C1.imag * C2.imag);
 		return C3;
 	}
 
-	SimpComplex operator *=(int& k) {//умножение на число
-		real = real * k;
-		imag = imag * k;
-		return *this;
+	float fabs(const SimpComplex& n){//модуль комплексного числа
+		float i;
+		i = sqrt(real * real + imag * imag);
+		return i;
 	}
-*/
+	SimpComplex operator<(int n){//сравнение уравнений
+		SimpComplex C1;
+		if ((this->real < n) && (this->imag < n)) {
+			return C1;
+		}
+		return SimpComplex();
+	}
+	
+	~SimpComplex(){}//Деструктор
 };
-/*
-SimpComplex operator*(SimpComplex C1, int k) {
-	SimpComplex C3;
-	C3.set_real(C1.get_real() + k);
-	C3.set_imag(C1.get_imag() + k);
-	return C3;
-}*/
+	ostream& operator<< (ostream& out, const SimpComplex &n) {//вывод перегрузки
+		if(n.imag>=0) out <<  n.real << "+" << n.imag << "*i";
+		else out << n.real << n.imag << "*i";
+		return out;
+	}
+	istream& operator>> (istream& in, SimpComplex &n) {//ввод перегрузки
+		in >> n.real; 
+		in >> n.imag;
+		return in;
+	}
