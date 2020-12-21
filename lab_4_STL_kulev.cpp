@@ -64,7 +64,7 @@ int main() {
     cout << "Задан набор целых чисел (данные вводятся из файла)." << endl;
     cout << " Вектор, заполненный элементами их файла: " << endl;
 
-    ifstream fh("Text.txt");
+    ifstream fh("Text_lab4_STL.txt");
     int n; int b; int c = 0;
     vector<int> v;
     int s;
